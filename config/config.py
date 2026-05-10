@@ -11,7 +11,7 @@ class Config:
 
     def parse_args(self):
         self.parser.add_argument("--batch_size", type=int, default=64)
-        self.parser.add_argument("--stream_batch_size", type=int, default=100)
+        self.parser.add_argument("--stream_batch_size", type=int, default=50)
         self.parser.add_argument("--test_batch_size", type=int, default=10)
         self.parser.add_argument("--gpu", type=str, default="0")
         self.parser.add_argument("--n_epochs", type=int, default=20)
@@ -34,13 +34,13 @@ class Config:
             "--classifier_type",
             type=str,
             default="ann",
-            choices=["ann", "snn", "resnet18"],
+            choices=["ann", "snn", "resnet10", "resnet18"],
             help="Classifier head type. 'ann' is the fast default; 'snn' keeps a fully spiking classifier.",
         )
 
         # SDM-CL memory and drift detection parameters.
         self.parser.add_argument("--short_memory_size", type=int, default=128)
-        self.parser.add_argument("--long_memory_size", type=int, default=1000)
+        self.parser.add_argument("--long_memory_size", type=int, default=2000)
         self.parser.add_argument("--memory_size", type=int, default=None)
         self.parser.add_argument("--psp_tau_syn", type=float, default=10.0)
         self.parser.add_argument("--encode_batch_size", type=int, default=64)

@@ -63,21 +63,31 @@ Run Permuted MNIST:
 python main.py --dataset permuted_mnist
 ```
 
-## Server Script
+## Server Scripts
 
-The `scripts/run_all.sh` script contains three complete commands for MNIST, CIFAR-10, and CIFAR-100.
+The `scripts/` directory provides both per-dataset scripts and an all-in-one script.
+
+Run one dataset:
+
+```bash
+bash scripts/run_mnist.sh
+bash scripts/run_cifar10.sh
+bash scripts/run_cifar100.sh
+```
+
+Run MNIST, CIFAR-10, and CIFAR-100 sequentially:
 
 ```bash
 bash scripts/run_all.sh
 ```
 
-It uses:
+The scripts use:
 
-| Dataset | Long memory size | Drift threshold |
-| --- | --- | --- |
-| MNIST | `2000` | `0.008` |
-| CIFAR-10 | `1000` | `0.008` |
-| CIFAR-100 | `5000` | `0.008` |
+| Dataset | Local epochs | Classifier | Long memory size | Drift threshold |
+| --- | --- | --- | --- | --- |
+| MNIST | `20` | `ann` | `2000` | `0.008` |
+| CIFAR-10 | `50` | `resnet10` | `1000` | `0.008` |
+| CIFAR-100 | `50` | `resnet10` | `5000` | `0.008` |
 
 The scripts use separate checkpoint directories for each dataset:
 
@@ -91,7 +101,7 @@ modelpth/permuted_mnist
 You can override common settings with environment variables:
 
 ```bash
-GPU=1 DATASET_FRACTION=0.5 N_EPOCHS=20 bash scripts/run_all.sh
+GPU=1 DATASET_FRACTION=0.5 CIFAR_N_EPOCHS=50 bash scripts/run_all.sh
 ```
 
 ## Example Command
@@ -102,10 +112,10 @@ python main.py \
   --dataset_fraction 0.15 \
   --n_epochs 20 \
   --batch_size 64 \
-  --stream_batch_size 100 \
+  --stream_batch_size 50 \
   --test_batch_size 10 \
   --short_memory_size 128 \
-  --long_memory_size 1000 \
+  --long_memory_size 2000 \
   --threshold 0.008 \
   --classifier_type ann
 ```
@@ -118,13 +128,13 @@ python main.py \
 | `--dataset_fraction` | `0.15` | Fraction of the dataset used for training and testing |
 | `--n_epochs` | `20` | Local training epochs for the active expert |
 | `--batch_size` | `64` | Minibatch size for expert training |
-| `--stream_batch_size` | `100` | Batch size of the incoming training stream |
+| `--stream_batch_size` | `50` | Batch size of the incoming training stream |
 | `--test_batch_size` | `10` | Batch size used by test loaders |
 | `--short_memory_size` | `128` | Capacity of the short memory |
-| `--long_memory_size` | `1000` | Capacity of the long memory |
+| `--long_memory_size` | `2000` | Capacity of the long memory |
 | `--threshold` | dataset-specific | Drift threshold for expert expansion |
 | `--n_steps` | `16` | Number of spiking time steps |
-| `--classifier_type` | `ann` | Classifier head: `ann`, `snn`, or `resnet18` |
+| `--classifier_type` | `ann` | Classifier head: `ann`, `snn`, `resnet10`, or `resnet18` |
 | `--model_dir` | `modelpth` | Directory for resumable checkpoints |
 | `--save_dir` | `results` | Directory for experiment logs and outputs |
 
@@ -148,6 +158,12 @@ To use a ResNet-18 classifier:
 
 ```bash
 python main.py --classifier_type resnet18
+```
+
+To use a Torchvision ResNet-10 classifier:
+
+```bash
+python main.py --classifier_type resnet10
 ```
 
 ## Checkpoint Resume

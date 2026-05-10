@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torchvision.models as models
+from torchvision.models.resnet import BasicBlock, ResNet
 
 from fsvae_models.snn_layers import LIFSpike, tdBatchNorm, tdConv, tdLinear
 
@@ -22,6 +23,26 @@ class Classifier(nn.Module):
             bias=original_conv1.bias is not None,
         )
         self.model.fc = nn.Linear(self.model.fc.in_features, num_classes)
+
+    def forward(self, x):
+        return self.model(x)
+
+
+class ResNet10Classifier(nn.Module):
+    """Torchvision ResNet-10 with a CIFAR-style stem for 32x32 inputs."""
+
+    def __init__(self, num_classes=10, input_channels=3):
+        super().__init__()
+        self.model = ResNet(BasicBlock, [1, 1, 1, 1], num_classes=num_classes)
+        self.model.conv1 = nn.Conv2d(
+            input_channels,
+            64,
+            kernel_size=3,
+            stride=1,
+            padding=1,
+            bias=False,
+        )
+        self.model.maxpool = nn.Identity()
 
     def forward(self, x):
         return self.model(x)
@@ -156,4 +177,6 @@ def build_classifier(classifier_type, input_channels=1, num_classes=10, n_steps=
         )
     if classifier_type == "resnet18":
         return Classifier(num_classes=num_classes, input_channels=input_channels)
+    if classifier_type == "resnet10":
+        return ResNet10Classifier(num_classes=num_classes, input_channels=input_channels)
     raise ValueError(f"Unsupported classifier_type: {classifier_type}")
