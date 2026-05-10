@@ -1,6 +1,6 @@
-# SpikingSDM
+# Spiking Dual-Memory Continual Learning (SDMCL)
 
-SpikingSDM is a task-free continual learning framework based on spiking experts and dual-memory drift detection. It is designed for non-stationary data streams where task boundaries are not provided during training.
+Spiking Dual-Memory Continual Learning (SDMCL) is a task-free continual learning framework based on spiking experts and dual-memory drift detection. It is designed for non-stationary data streams where task boundaries are not provided during training.
 
 The system keeps two memory pools:
 
