@@ -1,0 +1,30 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE / local metadata
+.idea/
+.vscode/
+
+# Data and generated outputs
+data/
+results/
+recon_results/
+modelpth/
+runs/
+
+# Model checkpoints and tensorboard events
+*.pth
+*.pt
+*.ckpt
+events.out.tfevents.*
+
+# OS files
+.DS_Store
+Thumbs.db
