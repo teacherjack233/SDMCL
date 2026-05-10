@@ -33,6 +33,12 @@ For CUDA support, install the PyTorch build that matches your GPU driver and CUD
 
 ## Quick Start
 
+Install dependencies after cloning the repository:
+
+```bash
+pip install -r requirements.txt
+```
+
 Run with the default MNIST setting:
 
 ```bash
@@ -55,6 +61,37 @@ Run Permuted MNIST:
 
 ```bash
 python main.py --dataset permuted_mnist
+```
+
+## Server Script
+
+The `scripts/run_all.sh` script contains three complete commands for MNIST, CIFAR-10, and CIFAR-100.
+
+```bash
+bash scripts/run_all.sh
+```
+
+It uses:
+
+| Dataset | Long memory size | Drift threshold |
+| --- | --- | --- |
+| MNIST | `2000` | `0.008` |
+| CIFAR-10 | `1000` | `0.008` |
+| CIFAR-100 | `5000` | `0.008` |
+
+The scripts use separate checkpoint directories for each dataset:
+
+```text
+modelpth/mnist
+modelpth/cifar10
+modelpth/cifar100
+modelpth/permuted_mnist
+```
+
+You can override common settings with environment variables:
+
+```bash
+GPU=1 DATASET_FRACTION=0.5 N_EPOCHS=20 bash scripts/run_all.sh
 ```
 
 ## Example Command
