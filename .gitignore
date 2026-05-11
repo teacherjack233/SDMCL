@@ -12,8 +12,13 @@ env/
 .idea/
 .vscode/
 
-# Data and generated outputs
-data/
+# Downloaded datasets and generated outputs
+data/MNIST/
+data/FashionMNIST/
+data/cifar-10-batches-py/
+data/cifar-100-python/
+data/*.gz
+data/*.zip
 results/
 recon_results/
 modelpth/
